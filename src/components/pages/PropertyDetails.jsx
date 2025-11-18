@@ -1,23 +1,25 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import RatingDisplay from "@/components/molecules/RatingDisplay";
-import BookingWidget from "@/components/organisms/BookingWidget";
-import AvailabilityCalendar from "@/components/molecules/AvailabilityCalendar";
-import Loading from "@/components/ui/Loading";
-import ErrorView from "@/components/ui/ErrorView";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { propertyService } from "@/services/api/propertyService";
 import { hostService } from "@/services/api/hostService";
 import { reviewService } from "@/services/api/reviewService";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import AvailabilityCalendar from "@/components/molecules/AvailabilityCalendar";
+import RatingDisplay, { CategoryRatingDisplay } from "@/components/molecules/RatingDisplay";
+import Loading from "@/components/ui/Loading";
+import ErrorView from "@/components/ui/ErrorView";
+import BookingWidget from "@/components/organisms/BookingWidget";
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 const [property, setProperty] = useState(null);
   const [host, setHost] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
   const loadPropertyDetails = async () => {
@@ -37,8 +39,14 @@ const [property, setProperty] = useState(null);
       setHost(hostData);
       
       // Load reviews
-      const reviewsData = await reviewService.getByPropertyId(parseInt(id));
+const reviewsData = await reviewService.getByPropertyId(parseInt(id));
       setReviews(reviewsData);
+      
+      // Calculate average rating from reviews
+      if (reviewsData.length > 0) {
+        const avgRating = reviewsData.reduce((sum, review) => sum + review.rating, 0) / reviewsData.length;
+        setProperty(prev => ({ ...prev, rating: Number(avgRating.toFixed(1)), reviewCount: reviewsData.length }));
+      }
       
     } catch (err) {
       setError(err.message || "Failed to load property details");
@@ -261,45 +269,97 @@ const [property, setProperty] = useState(null);
             </div>
           </motion.div>
 
-          {/* Reviews */}
+{/* Reviews */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <div className="flex items-center gap-2 mb-6">
-              <ApperIcon name="Star" className="w-6 h-6 text-yellow-400 fill-current" />
-              <h3 className="text-xl font-display font-semibold text-gray-900">
-                {property.rating} • {reviews.length} review{reviews.length !== 1 ? 's' : ''}
-              </h3>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <ApperIcon name="Star" className="w-6 h-6 text-yellow-400 fill-current" />
+                <h3 className="text-xl font-display font-semibold text-gray-900">
+                  {property.rating || 0} • {reviews.length} review{reviews.length !== 1 ? 's' : ''}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowReviewForm(true)}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+              >
+                Write a Review
+              </button>
             </div>
-            
+
+            {/* Overall Rating Breakdown */}
+            {reviews.length > 0 && (
+              <div className="mb-8 p-6 bg-gray-50 rounded-xl">
+                <h4 className="font-semibold text-gray-900 mb-4">Rating Breakdown</h4>
+                <CategoryRatingBreakdown reviews={reviews} />
+</div>
+            )}
+
+            {/* Reviews List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {reviews.slice(0, 6).map((review) => (
-                <div key={review.Id} className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={review.guestPhoto}
-                      alt={review.guestName}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div>
-                      <div className="font-medium text-gray-900">{review.guestName}</div>
-                      <div className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString('en-US', {
-                          month: 'long',
-                          year: 'numeric'
-                        })}
+                <div key={review.Id} className="space-y-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={review.guestPhoto}
+                        alt={review.guestName}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div>
+                        <div className="font-medium text-gray-900">{review.guestName}</div>
+                        <div className="text-sm text-gray-500">
+                          {new Date(review.date).toLocaleDateString('en-US', {
+                            month: 'long',
+                            year: 'numeric'
+                          })} • {review.stayDuration}
+                        </div>
                       </div>
                     </div>
+                    <RatingDisplay 
+                      rating={review.rating} 
+                      showText={true} 
+                      size="sm"
+                      reviewCount={0}
+                    />
                   </div>
+                  
+                  {/* Category ratings for this review */}
+                  {review.ratings && (
+                    <div className="border-t pt-4">
+                      <CategoryRatingDisplay ratings={review.ratings} size="xs" />
+                    </div>
+                  )}
+                  
                   <p className="text-gray-700 text-sm leading-relaxed">
                     {review.comment}
                   </p>
                 </div>
               ))}
             </div>
-</motion.div>
+
+            {reviews.length > 6 && (
+              <div className="text-center mt-8">
+                <button className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
+                  Show all {reviews.length} reviews
+                </button>
+              </div>
+            )}
+
+            {/* Review Form Modal */}
+            <ReviewFormModal 
+              isOpen={showReviewForm}
+              onClose={() => setShowReviewForm(false)}
+              propertyId={parseInt(id)}
+              onReviewSubmitted={() => {
+                // Refresh reviews after submission
+                window.location.reload();
+              }}
+            />
+          </motion.div>
         </div>
 
         {/* Right Column - Booking Widget and Availability */}
@@ -348,7 +408,7 @@ const [property, setProperty] = useState(null);
                 alt={`${property.title} ${selectedImage + 1}`}
                 className="max-w-[90vw] max-h-[90vh] object-contain"
               />
-
+              
               <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
                 {selectedImage + 1} / {property.images.length}
               </div>
@@ -356,6 +416,261 @@ const [property, setProperty] = useState(null);
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+// Component for displaying overall rating breakdown by category
+const CategoryRatingBreakdown = ({ reviews }) => {
+  const categories = [
+    { key: 'cleanliness', label: 'Cleanliness' },
+    { key: 'accuracy', label: 'Accuracy' },
+    { key: 'checkin', label: 'Check-in' },
+    { key: 'communication', label: 'Communication' },
+    { key: 'location', label: 'Location' },
+    { key: 'value', label: 'Value' }
+  ];
+
+  const calculateCategoryAverage = (categoryKey) => {
+    const validRatings = reviews
+      .map(review => review.ratings?.[categoryKey])
+      .filter(rating => rating !== undefined);
+    
+    if (validRatings.length === 0) return 0;
+    
+    const sum = validRatings.reduce((acc, rating) => acc + rating, 0);
+    return (sum / validRatings.length).toFixed(1);
+  };
+
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      {categories.map(({ key, label }) => {
+        const average = calculateCategoryAverage(key);
+        return (
+          <div key={key} className="flex items-center justify-between">
+            <span className="text-sm text-gray-600 font-medium">{label}</span>
+            <div className="flex items-center gap-2">
+              <RatingDisplay 
+                rating={parseFloat(average)} 
+                showText={false} 
+                size="sm"
+                showStars={true}
+              />
+              <span className="text-sm font-semibold text-gray-900 min-w-[2rem]">
+                {average}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// Review Form Modal Component
+const ReviewFormModal = ({ isOpen, onClose, propertyId, onReviewSubmitted }) => {
+  const [formData, setFormData] = useState({
+    rating: 0,
+    ratings: {
+      cleanliness: 0,
+      accuracy: 0,
+      checkin: 0,
+      communication: 0,
+      location: 0,
+      value: 0
+    },
+    comment: '',
+    guestName: '',
+    guestPhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80'
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleCategoryRatingChange = (category, rating) => {
+    setFormData(prev => ({
+      ...prev,
+      ratings: {
+        ...prev.ratings,
+        [category]: rating
+      }
+    }));
+    
+    // Calculate overall rating as average of category ratings
+    const newRatings = { ...formData.ratings, [category]: rating };
+    const validRatings = Object.values(newRatings).filter(r => r > 0);
+    if (validRatings.length > 0) {
+      const avgRating = validRatings.reduce((sum, r) => sum + r, 0) / validRatings.length;
+      setFormData(prev => ({ ...prev, rating: Math.round(avgRating) }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.guestName.trim() || !formData.comment.trim() || formData.rating === 0) {
+      toast.error('Please fill in all required fields and provide a rating');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await reviewService.create({
+        propertyId,
+        guestName: formData.guestName,
+        guestPhoto: formData.guestPhoto,
+        rating: formData.rating,
+        ratings: formData.ratings,
+        comment: formData.comment,
+        stayDuration: "Recent stay"
+      });
+      
+      toast.success('Review submitted successfully!');
+      onReviewSubmitted();
+      onClose();
+    } catch (error) {
+      toast.error('Failed to submit review');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const categories = [
+    { key: 'cleanliness', label: 'Cleanliness' },
+    { key: 'accuracy', label: 'Accuracy' },
+    { key: 'checkin', label: 'Check-in' },
+    { key: 'communication', label: 'Communication' },
+    { key: 'location', label: 'Location' },
+    { key: 'value', label: 'Value' }
+  ];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-display font-semibold text-gray-900">Write a Review</h3>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <ApperIcon name="X" size={20} />
+            </button>
+          </div>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Guest Info */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Your Name *
+            </label>
+            <input
+              type="text"
+              value={formData.guestName}
+              onChange={(e) => setFormData(prev => ({ ...prev, guestName: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              required
+            />
+          </div>
+
+          {/* Overall Rating Display */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Overall Rating: {formData.rating}/5
+            </label>
+            <RatingDisplay 
+              rating={formData.rating} 
+              showText={false} 
+              size="lg"
+            />
+          </div>
+
+          {/* Category Ratings */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-4">
+              Rate by Category *
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {categories.map(({ key, label }) => (
+                <div key={key} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 font-medium">{label}</span>
+                  <StarRatingInput
+                    rating={formData.ratings[key]}
+                    onChange={(rating) => handleCategoryRatingChange(key, rating)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Comment */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Your Review *
+            </label>
+            <textarea
+              value={formData.comment}
+              onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Share your experience..."
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50"
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Review'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Interactive Star Rating Input Component
+const StarRatingInput = ({ rating, onChange, size = "sm" }) => {
+  const [hoveredRating, setHoveredRating] = useState(0);
+  
+  const iconSizes = {
+    sm: "w-5 h-5",
+    md: "w-6 h-6",
+    lg: "w-7 h-7"
+  };
+
+  return (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          onClick={() => onChange(star)}
+          onMouseEnter={() => setHoveredRating(star)}
+          onMouseLeave={() => setHoveredRating(0)}
+          className="transition-colors hover:scale-110 transform"
+        >
+          <ApperIcon
+            name="Star"
+            className={`${iconSizes[size]} transition-colors ${
+              star <= (hoveredRating || rating)
+                ? 'text-yellow-400 fill-current'
+                : 'text-gray-300'
+            }`}
+          />
+        </button>
+      ))}
     </div>
   );
 };

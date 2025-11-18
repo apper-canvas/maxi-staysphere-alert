@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { reviewService } from "@/services/api/reviewService";
 import ApperIcon from "@/components/ApperIcon";
 import Card from "@/components/atoms/Card";
-import { toast } from "react-toastify";
 
 const PropertyCard = ({ property }) => {
   const navigate = useNavigate();
@@ -104,20 +105,17 @@ const PropertyCard = ({ property }) => {
         {/* Content Section */}
         <div className="p-4" onClick={handleCardClick}>
           {/* Location and Rating */}
-          <div className="flex justify-between items-start mb-2">
+<div className="flex justify-between items-start mb-2">
             <div className="flex-1">
               <h3 className="font-display font-semibold text-gray-900 text-sm md:text-base mb-1 line-clamp-2">
                 {property.title}
               </h3>
-<p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm text-gray-600 mb-2">
                 {property.location?.city ? `${property.location.city}${property.location?.country ? `, ${property.location.country}` : ''}` : 'Location not specified'}
               </p>
             </div>
-            <div className="flex items-center gap-1 ml-2 flex-shrink-0">
-              <ApperIcon name="Star" className="w-3 h-3 text-yellow-400 fill-current" />
-              <span className="text-sm font-semibold text-gray-900">{property.rating}</span>
-              <span className="text-sm text-gray-500">({property.reviewCount})</span>
-            </div>
+            <PropertyRatingDisplay propertyId={property.Id} />
+          </div>
           </div>
 
           {/* Property Details */}
@@ -170,19 +168,59 @@ const PropertyCard = ({ property }) => {
             </div>
           )}
 
-          {/* Price */}
+{/* Price */}
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600">{property.propertyType}</div>
             <div className="text-right">
               <span className="font-display font-bold text-gray-900">
                 ${property.pricePerNight}
               </span>
-              <span className="text-sm text-gray-600 ml-1">night</span>
+              <span className="text-sm text-gray-600"> / night</span>
             </div>
           </div>
         </div>
       </Card>
     </motion.div>
+  );
+};
+
+// Component to display property rating with real-time calculation
+const PropertyRatingDisplay = ({ propertyId }) => {
+  const [rating, setRating] = React.useState(0);
+  const [reviewCount, setReviewCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const loadRating = async () => {
+      try {
+        const reviews = await reviewService.getByPropertyId(propertyId);
+        if (reviews.length > 0) {
+          const avgRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+          setRating(Number(avgRating.toFixed(1)));
+          setReviewCount(reviews.length);
+        }
+      } catch (error) {
+        console.error('Error loading rating:', error);
+      }
+    };
+    
+    loadRating();
+  }, [propertyId]);
+
+  if (reviewCount === 0) {
+    return (
+      <div className="flex items-center gap-1 ml-2 flex-shrink-0 text-gray-400">
+        <ApperIcon name="Star" className="w-3 h-3" />
+        <span className="text-sm">New</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1 ml-2 flex-shrink-0">
+      <ApperIcon name="Star" className="w-3 h-3 text-yellow-400 fill-current" />
+      <span className="text-sm font-semibold text-gray-900">{rating}</span>
+      <span className="text-sm text-gray-500">({reviewCount})</span>
+    </div>
   );
 };
 

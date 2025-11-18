@@ -1,6 +1,6 @@
 import ApperIcon from "@/components/ApperIcon";
 
-const RatingDisplay = ({ rating, reviewCount, showText = true, size = "sm" }) => {
+const RatingDisplay = ({ rating, reviewCount, showText = true, size = "sm", showStars = true }) => {
   const sizeClasses = {
     xs: "text-xs",
     sm: "text-sm",
@@ -58,9 +58,11 @@ const RatingDisplay = ({ rating, reviewCount, showText = true, size = "sm" }) =>
 
   return (
     <div className="flex items-center gap-1">
-      <div className="flex items-center">
-        {renderStars()}
-      </div>
+      {showStars && (
+        <div className="flex items-center">
+          {renderStars()}
+        </div>
+      )}
       {showText && (
         <div className={`flex items-center gap-1 ${sizeClasses[size]}`}>
           <span className="font-semibold text-gray-900">{rating}</span>
@@ -71,6 +73,34 @@ const RatingDisplay = ({ rating, reviewCount, showText = true, size = "sm" }) =>
           )}
         </div>
       )}
+    </div>
+  );
+};
+
+// Component for displaying category ratings
+export const CategoryRatingDisplay = ({ ratings, size = "sm" }) => {
+  const categories = [
+    { key: 'cleanliness', label: 'Cleanliness' },
+    { key: 'accuracy', label: 'Accuracy' },
+    { key: 'checkin', label: 'Check-in' },
+    { key: 'communication', label: 'Communication' },
+    { key: 'location', label: 'Location' },
+    { key: 'value', label: 'Value' }
+  ];
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {categories.map(({ key, label }) => (
+        <div key={key} className="flex items-center justify-between">
+          <span className="text-sm text-gray-600">{label}</span>
+          <RatingDisplay 
+            rating={ratings[key] || 0} 
+            showText={false} 
+            size={size}
+            showStars={true}
+          />
+        </div>
+      ))}
     </div>
   );
 };
