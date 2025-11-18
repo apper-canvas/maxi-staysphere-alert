@@ -20,10 +20,10 @@ const Header = () => {
     setShowSearch(false);
   };
 
-  const navItems = [
+const navItems = [
     { label: "Explore", href: "/", icon: "Compass" },
-    { label: "Saved", href: "/saved", icon: "Heart" },
-    { label: "Trips", href: "/trips", icon: "Calendar" },
+    { label: "My Bookings", href: "/bookings", icon: "Calendar" },
+    { label: "Trips", href: "/trips", icon: "MapPin" },
     { label: "Messages", href: "/messages", icon: "MessageCircle" },
   ];
 
