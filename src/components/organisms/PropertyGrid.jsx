@@ -15,13 +15,13 @@ const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
   const filterProperties = (properties) => {
     return properties.filter(property => {
       // Location filter
-      if (searchLocation && searchLocation.trim()) {
+if (searchLocation && searchLocation.trim()) {
         const searchTerm = searchLocation.toLowerCase();
         const matchesLocation = 
-          property.location.city.toLowerCase().includes(searchTerm) ||
-          property.location.country.toLowerCase().includes(searchTerm) ||
-          property.location.address.toLowerCase().includes(searchTerm) ||
-          property.title.toLowerCase().includes(searchTerm);
+          property.location?.city?.toLowerCase().includes(searchTerm) ||
+          property.location?.country?.toLowerCase().includes(searchTerm) ||
+          property.location?.address?.toLowerCase().includes(searchTerm) ||
+          property.title?.toLowerCase().includes(searchTerm);
         
         if (!matchesLocation) return false;
       }
@@ -51,10 +51,10 @@ const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
         return false;
       }
       
-      // Amenities filter
+// Amenities filter
       if (filters.amenities && filters.amenities.length > 0) {
         const hasAllAmenities = filters.amenities.every(amenity => 
-          property.amenities.includes(amenity)
+          property.amenities?.includes(amenity)
         );
         if (!hasAllAmenities) return false;
       }

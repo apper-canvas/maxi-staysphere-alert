@@ -121,7 +121,7 @@ const [property, setProperty] = useState(null);
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <RatingDisplay rating={property.rating} reviewCount={property.reviewCount} />
           <span>•</span>
-          <span>{property.location.address}, {property.location.city}, {property.location.country}</span>
+<span>{property.location?.address}, {property.location?.city}, {property.location?.country}</span>
         </div>
       </motion.div>
 
