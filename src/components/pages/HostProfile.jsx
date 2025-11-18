@@ -25,7 +25,7 @@ const { id } = useParams();
       setLoading(true);
       setError("");
       
-      const hostData = await hostService.getById(parseInt(id));
+const hostData = await hostService.getById(parseInt(id));
       if (!hostData) {
         throw new Error("Host not found");
       }

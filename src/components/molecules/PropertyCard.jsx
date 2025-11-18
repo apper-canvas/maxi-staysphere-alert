@@ -110,7 +110,7 @@ const PropertyCard = ({ property }) => {
                 {property.title}
               </h3>
 <p className="text-sm text-gray-600 mb-2">
-                {property.location?.city}, {property.location?.country}
+                {property.location?.city ? `${property.location.city}${property.location?.country ? `, ${property.location.country}` : ''}` : 'Location not specified'}
               </p>
             </div>
             <div className="flex items-center gap-1 ml-2 flex-shrink-0">

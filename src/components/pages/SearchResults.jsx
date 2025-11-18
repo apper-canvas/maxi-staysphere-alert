@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
+import FilterChip from "@/components/molecules/FilterChip";
 import PropertyGrid from "@/components/organisms/PropertyGrid";
 import FilterPanel from "@/components/organisms/FilterPanel";
-import FilterChip from "@/components/molecules/FilterChip";
-import SearchBar from "@/components/molecules/SearchBar";
-import ApperIcon from "@/components/ApperIcon";
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -154,7 +154,7 @@ const SearchResults = () => {
               <h1 className="text-2xl font-display font-semibold text-gray-900 mb-2">
                 {searchLocation ? `Places to stay in ${searchLocation}` : "Search results"}
               </h1>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+<div className="flex items-center gap-2 text-sm text-gray-600">
                 {searchParams.get("checkIn") && searchParams.get("checkOut") && (
                   <>
                     <span>

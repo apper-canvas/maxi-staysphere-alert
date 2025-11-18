@@ -17,11 +17,16 @@ const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
       // Location filter
 if (searchLocation && searchLocation.trim()) {
         const searchTerm = searchLocation.toLowerCase();
+        const locationCity = property.location?.city?.toLowerCase() || '';
+        const locationCountry = property.location?.country?.toLowerCase() || '';
+        const locationAddress = property.location?.address?.toLowerCase() || '';
+        const propertyTitle = property.title?.toLowerCase() || '';
+        
         const matchesLocation = 
-          property.location?.city?.toLowerCase().includes(searchTerm) ||
-          property.location?.country?.toLowerCase().includes(searchTerm) ||
-          property.location?.address?.toLowerCase().includes(searchTerm) ||
-          property.title?.toLowerCase().includes(searchTerm);
+          locationCity.includes(searchTerm) ||
+          locationCountry.includes(searchTerm) ||
+          locationAddress.includes(searchTerm) ||
+          propertyTitle.includes(searchTerm);
         
         if (!matchesLocation) return false;
       }
@@ -75,7 +80,7 @@ if (searchLocation && searchLocation.trim()) {
       setError("");
       
 const response = await propertyService.getAll();
-      const allProperties = response?.data || [];
+      const allProperties = response?.data || response || [];
       
       // Apply filters to the properties
       const filteredProperties = filterProperties(allProperties);

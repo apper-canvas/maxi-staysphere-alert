@@ -154,8 +154,8 @@ if (filters.bedrooms) {
         {/* Filter Bar */}
         <div className="py-6 border-b border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-display font-semibold text-gray-900">
-              {searchLocation ? `Properties in ${searchLocation}` : "Explore properties"}
+<h2 className="text-2xl font-display font-semibold text-gray-900">
+              {searchLocation && searchLocation.trim() ? `Properties in ${searchLocation}` : "Explore properties"}
             </h2>
             
             <button

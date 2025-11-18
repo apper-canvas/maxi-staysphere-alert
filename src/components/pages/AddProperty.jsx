@@ -103,7 +103,10 @@ const propertyData = {
         amenities: formData.features,
         rating: 0,
         reviewCount: 0,
-        location: {
+location: {
+          address: formData.address,
+          city: '', // Extract from address in real implementation
+          country: '', // Extract from address in real implementation
           lat: 0,
           lng: 0
         },
