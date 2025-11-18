@@ -129,6 +129,47 @@ const PropertyCard = ({ property }) => {
             <span>{property.bathrooms} baths</span>
           </div>
 
+{/* Amenities */}
+          {property.amenities && property.amenities.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {property.amenities.slice(0, 4).map((amenity) => {
+                const amenityIcons = {
+                  wifi: "Wifi",
+                  kitchen: "ChefHat", 
+                  washer: "Shirt",
+                  dryer: "Wind",
+                  airConditioning: "Snowflake",
+                  heating: "Thermometer",
+                  tv: "Tv",
+                  parking: "Car",
+                  gym: "Dumbbell",
+                  pool: "Waves",
+                  hotTub: "Bath",
+                  fireplace: "Flame"
+                };
+                
+                return (
+                  <div key={amenity} className="flex items-center gap-1 bg-gray-100 rounded-full px-2 py-1">
+                    <ApperIcon 
+                      name={amenityIcons[amenity] || "Check"} 
+                      className="w-3 h-3 text-gray-600" 
+                    />
+                    <span className="text-xs text-gray-600 capitalize">
+                      {amenity.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                  </div>
+                );
+              })}
+              {property.amenities.length > 4 && (
+                <div className="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                  <span className="text-xs text-gray-600">
+                    +{property.amenities.length - 4} more
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Price */}
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600">{property.propertyType}</div>

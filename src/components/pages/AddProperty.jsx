@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
-import PhotoUpload from "@/components/molecules/PhotoUpload";
 import { propertyService } from "@/services/api/propertyService";
 import ApperIcon from "@/components/ApperIcon";
+import PhotoUpload from "@/components/molecules/PhotoUpload";
 import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 import Input from "@/components/atoms/Input";
@@ -29,6 +29,7 @@ const [formData, setFormData] = useState({
     bathrooms: 1,
     maxGuests: 1,
     photos: [],
+    features: [],
     pricePerNight: ''
   });
 
@@ -38,8 +39,9 @@ const steps = [
     { number: 1, title: 'Basic Info', description: 'Tell us about your property' },
     { number: 2, title: 'Property Details', description: 'Room and guest information' },
     { number: 3, title: 'Photos', description: 'Upload property images' },
-    { number: 4, title: 'Pricing', description: 'Set your nightly rate' },
-    { number: 5, title: 'Review & Submit', description: 'Double-check everything' }
+    { number: 4, title: 'Property Features', description: 'Select available amenities' },
+    { number: 5, title: 'Pricing', description: 'Set your nightly rate' },
+    { number: 6, title: 'Review & Submit', description: 'Double-check everything' }
   ];
 
   const validateStep = (step) => {
@@ -63,8 +65,8 @@ if (step === 3) {
         newErrors.photos = 'At least one photo is required';
       }
     }
-    
-    if (step === 4) {
+
+    if (step === 5) {
       if (!formData.pricePerNight || parseFloat(formData.pricePerNight) <= 0) {
         newErrors.pricePerNight = 'Valid price per night is required';
       }
@@ -76,7 +78,7 @@ if (step === 3) {
 
   const handleNext = () => {
 if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 5));
+      setCurrentStep(prev => Math.min(prev + 1, 6));
     }
   };
 
@@ -89,7 +91,7 @@ if (!validateStep(5)) return;
     
     setLoading(true);
     try {
-      const propertyData = {
+const propertyData = {
         ...formData,
         hostId: 1, // For demo purposes - in real app, get from auth
         bedrooms: parseInt(formData.bedrooms),
@@ -97,10 +99,10 @@ if (!validateStep(5)) return;
         maxGuests: parseInt(formData.maxGuests),
         pricePerNight: parseFloat(formData.pricePerNight),
         images: formData.photos.length > 0 ? formData.photos : ['/api/placeholder/800/600'],
-        amenities: [],
+        amenities: formData.features,
         rating: 0,
         reviewCount: 0,
-        location: {
+location: {
           lat: 0,
           lng: 0
         }
@@ -123,6 +125,22 @@ if (!validateStep(5)) return;
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
+
+// Available amenities with icons and descriptions
+  const AMENITIES = [
+    { id: 'wifi', label: 'WiFi', icon: 'Wifi', description: 'Wireless internet access' },
+    { id: 'kitchen', label: 'Kitchen', icon: 'ChefHat', description: 'Full kitchen with appliances' },
+    { id: 'washer', label: 'Washer', icon: 'Shirt', description: 'Washing machine available' },
+    { id: 'dryer', label: 'Dryer', icon: 'Wind', description: 'Clothes dryer available' },
+    { id: 'airConditioning', label: 'Air Conditioning', icon: 'Snowflake', description: 'Climate control cooling' },
+    { id: 'heating', label: 'Heating', icon: 'Thermometer', description: 'Climate control heating' },
+    { id: 'tv', label: 'TV', icon: 'Tv', description: 'Television with cable/streaming' },
+    { id: 'parking', label: 'Parking', icon: 'Car', description: 'Free parking on premises' },
+    { id: 'gym', label: 'Gym', icon: 'Dumbbell', description: 'Fitness center access' },
+    { id: 'pool', label: 'Pool', icon: 'Waves', description: 'Swimming pool access' },
+    { id: 'hotTub', label: 'Hot Tub', icon: 'Bath', description: 'Hot tub or spa' },
+    { id: 'fireplace', label: 'Fireplace', icon: 'Flame', description: 'Indoor fireplace' }
+  ];
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -256,7 +274,54 @@ case 3:
           </div>
 );
         
-      case 4:
+case 4:
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Property Features</h3>
+              <p className="text-gray-600">Select the amenities and features available at your property</p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {AMENITIES.map((amenity) => (
+                <button
+                  key={amenity.id}
+                  type="button"
+                  onClick={() => {
+                    const currentFeatures = formData.features || [];
+                    const updatedFeatures = currentFeatures.includes(amenity.id)
+                      ? currentFeatures.filter(f => f !== amenity.id)
+                      : [...currentFeatures, amenity.id];
+                    updateFormData('features', updatedFeatures);
+                  }}
+                  className={`p-4 border rounded-lg text-left transition-all ${
+                    formData.features?.includes(amenity.id)
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <ApperIcon name={amenity.icon} className="w-5 h-5" />
+                    <span className="font-medium">{amenity.label}</span>
+                  </div>
+                  <p className="text-xs text-gray-500">{amenity.description}</p>
+                </button>
+              ))}
+            </div>
+            
+            <div className="bg-gray-50 rounded-lg p-4">
+              <p className="text-sm text-gray-600">
+                <strong>Selected features ({formData.features?.length || 0}):</strong>{' '}
+                {formData.features?.length > 0 
+                  ? formData.features.map(f => AMENITIES.find(a => a.id === f)?.label).join(', ')
+                  : 'None selected'
+                }
+              </p>
+            </div>
+          </div>
+        );
+
+      case 5:
         return (
           <div className="space-y-6">
             <div className="text-center mb-6">
@@ -286,9 +351,9 @@ case 3:
               </p>
             </div>
           </div>
-);
+        );
         
-      case 5:
+case 6:
         return (
           <div className="space-y-6">
             <div className="text-center mb-6">
@@ -337,12 +402,31 @@ case 3:
               </div>
               
               <div className="border border-gray-200 rounded-lg p-4">
+                <h5 className="font-medium text-gray-900 mb-2">Features ({formData.features?.length || 0})</h5>
+                {formData.features?.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {formData.features.map((featureId) => {
+                      const feature = AMENITIES.find(a => a.id === featureId);
+                      return feature ? (
+                        <div key={featureId} className="flex items-center gap-1 bg-gray-100 rounded-full px-2 py-1">
+                          <ApperIcon name={feature.icon} className="w-3 h-3" />
+                          <span className="text-xs">{feature.label}</span>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">No features selected</p>
+                )}
+              </div>
+              
+              <div className="border border-gray-200 rounded-lg p-4">
                 <h5 className="font-medium text-gray-900 mb-2">Pricing</h5>
                 <p className="text-2xl font-bold text-primary">${formData.pricePerNight}</p>
                 <p className="text-sm text-gray-500">per night</p>
               </div>
             </div>
-</div>
+          </div>
         );
         
       default:
@@ -422,7 +506,7 @@ currentStep >= step.number
             Previous
           </Button>
           
-{currentStep < 5 ? (
+{currentStep < 6 ? (
             <Button onClick={handleNext}>
               Next
             </Button>
