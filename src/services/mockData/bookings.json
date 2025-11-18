@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "propertyId": 1,
+    "guestId": "guest_001",
+    "checkIn": "2024-01-15T15:00:00Z",
+    "checkOut": "2024-01-18T11:00:00Z",
+    "guests": 2,
+    "totalPrice": 605,
+    "priceBreakdown": {
+      "nightlyRate": 185,
+      "nights": 3,
+      "cleaningFee": 50,
+      "serviceFee": 77,
+      "total": 605
+    },
+    "status": "confirmed",
+    "createdAt": "2023-12-20T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "propertyId": 3,
+    "guestId": "guest_002",
+    "checkIn": "2024-02-01T16:00:00Z",
+    "checkOut": "2024-02-08T11:00:00Z",
+    "guests": 8,
+    "totalPrice": 6350,
+    "priceBreakdown": {
+      "nightlyRate": 850,
+      "nights": 7,
+      "cleaningFee": 150,
+      "serviceFee": 245,
+      "total": 6350
+    },
+    "status": "confirmed",
+    "createdAt": "2023-12-18T14:15:00Z"
+  },
+  {
+    "Id": 3,
+    "propertyId": 5,
+    "guestId": "guest_003",
+    "checkIn": "2024-01-20T15:00:00Z",
+    "checkOut": "2024-01-22T11:00:00Z",
+    "guests": 1,
+    "totalPrice": 267,
+    "priceBreakdown": {
+      "nightlyRate": 95,
+      "nights": 2,
+      "cleaningFee": 50,
+      "serviceFee": 27,
+      "total": 267
+    },
+    "status": "confirmed",
+    "createdAt": "2023-12-22T09:45:00Z"
+  },
+  {
+    "Id": 4,
+    "propertyId": 9,
+    "guestId": "guest_004",
+    "checkIn": "2024-02-14T16:00:00Z",
+    "checkOut": "2024-02-18T11:00:00Z",
+    "guests": 6,
+    "totalPrice": 1308,
+    "priceBreakdown": {
+      "nightlyRate": 280,
+      "nights": 4,
+      "cleaningFee": 75,
+      "serviceFee": 113,
+      "total": 1308
+    },
+    "status": "confirmed",
+    "createdAt": "2023-12-25T16:20:00Z"
+  },
+  {
+    "Id": 5,
+    "propertyId": 12,
+    "guestId": "guest_005",
+    "checkIn": "2024-01-28T15:00:00Z",
+    "checkOut": "2024-01-30T11:00:00Z",
+    "guests": 2,
+    "totalPrice": 244,
+    "priceBreakdown": {
+      "nightlyRate": 85,
+      "nights": 2,
+      "cleaningFee": 50,
+      "serviceFee": 24,
+      "total": 244
+    },
+    "status": "pending",
+    "createdAt": "2024-01-02T11:30:00Z"
+  }
+]

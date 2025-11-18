@@ -1,0 +1,434 @@
+[
+  {
+    "Id": 1,
+    "propertyId": 1,
+    "guestName": "Jennifer Liu",
+    "guestPhoto": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Sarah's loft exceeded all expectations! The views are absolutely stunning, and the space is even more beautiful in person. The location is unbeatable - we could walk to amazing restaurants and the subway is right around the corner. Sarah was incredibly responsive and provided excellent local recommendations. Will definitely stay here again!",
+    "date": "2023-12-15T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 2,
+    "propertyId": 1,
+    "guestName": "Marcus Williams",
+    "guestPhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 4,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Perfect spot for a business trip! The apartment is modern, clean, and has everything you need. The kitchen is well-equipped, and the view from the living room is incredible. Sarah was very accommodating with our late check-in. Highly recommend!",
+    "date": "2023-11-28T00:00:00Z",
+    "stayDuration": "2 nights"
+  },
+  {
+    "Id": 3,
+    "propertyId": 2,
+    "guestName": "Elena Rodriguez",
+    "guestPhoto": "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 4,
+      "checkin": 5,
+      "communication": 5,
+      "location": 4,
+      "value": 5
+    },
+    "comment": "This Victorian house is absolutely magical! Every detail has been thoughtfully preserved, and the garden is a peaceful oasis. Michael was a wonderful host who shared fascinating stories about the house's history. The neighborhood is charming with great cafes nearby. A truly special place!",
+    "date": "2023-12-08T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 4,
+    "propertyId": 2,
+    "guestName": "David Kim",
+    "guestPhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 4,
+      "checkin": 4,
+      "communication": 5,
+      "location": 4,
+      "value": 4
+    },
+    "comment": "Beautiful historic home with lots of character. The rooms are spacious and comfortable, and we loved spending evenings in the garden. A few minor maintenance items, but Michael was quick to address them. Great location for exploring San Francisco!",
+    "date": "2023-11-20T00:00:00Z",
+    "stayDuration": "5 nights"
+  },
+  {
+    "Id": 5,
+    "propertyId": 3,
+    "guestName": "Sophia Anderson",
+    "guestPhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b1e8?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Pure luxury! This villa is a slice of paradise. Waking up to ocean views every morning was incredible, and the infinity pool is perfect for sunset cocktails. Isabella thought of every detail and even arranged a private chef one evening. Worth every penny for a special celebration!",
+    "date": "2023-12-01T00:00:00Z",
+    "stayDuration": "6 nights"
+  },
+  {
+    "Id": 6,
+    "propertyId": 3,
+    "guestName": "Robert Taylor",
+    "guestPhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Absolutely spectacular property! The architecture is stunning, and every room has incredible ocean views. The outdoor spaces are perfect for entertaining, and the beach access is unbeatable. Isabella is an exceptional host who anticipated every need. This is luxury vacation rental at its finest!",
+    "date": "2023-11-10T00:00:00Z",
+    "stayDuration": "7 nights"
+  },
+  {
+    "Id": 7,
+    "propertyId": 4,
+    "guestName": "Amanda Foster",
+    "guestPhoto": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 4,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Perfect mountain getaway! The cabin is cozy and authentic, with amazing views from every window. James provided excellent recommendations for hiking trails and local restaurants. The hot tub under the stars was magical. Exactly what we needed to disconnect and recharge!",
+    "date": "2023-12-03T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 8,
+    "propertyId": 4,
+    "guestName": "Chris Mitchell",
+    "guestPhoto": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 5,
+      "checkin": 4,
+      "communication": 4,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Great cabin for a guys' ski trip. Rustic but comfortable with everything we needed. The fireplace was perfect after long days on the mountain. James knows all the best local spots and gave us insider tips. Would definitely book again!",
+    "date": "2023-11-25T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 9,
+    "propertyId": 5,
+    "guestName": "Maya Patel",
+    "guestPhoto": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 4,
+      "checkin": 4,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Luna's studio is perfectly located in the heart of the Arts District! The design is sleek and functional, making great use of the space. I loved being able to walk to galleries and coffee shops. Luna provided a great list of art events happening during my stay. Perfect for a creative weekend getaway!",
+    "date": "2023-12-12T00:00:00Z",
+    "stayDuration": "2 nights"
+  },
+  {
+    "Id": 10,
+    "propertyId": 5,
+    "guestName": "Alex Johnson",
+    "guestPhoto": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 4,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Fantastic little studio in an amazing location! The murphy bed is genius and the space is surprisingly functional. Luna is a great host with excellent local knowledge. The neighborhood has incredible energy - street art everywhere and great food options. Highly recommend for solo travelers or couples!",
+    "date": "2023-11-18T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 11,
+    "propertyId": 6,
+    "guestName": "Rachel Green",
+    "guestPhoto": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 4,
+      "location": 4,
+      "value": 4
+    },
+    "comment": "This penthouse is absolutely stunning! The rooftop terrace is the crown jewel - perfect for morning yoga and evening cocktails. The views are incredible at all times of day. Alexander was professional and helpful throughout. The building amenities are top-notch. A truly luxurious experience!",
+    "date": "2023-12-05T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 12,
+    "propertyId": 6,
+    "guestName": "Daniel Martinez",
+    "guestPhoto": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Incredible penthouse with the best views in Miami! The rooftop terrace alone is worth the stay - we spent hours up there watching the sunset. Everything is high-end and beautifully designed. Alexander provided great restaurant recommendations. Perfect for a special occasion!",
+    "date": "2023-11-22T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 13,
+    "propertyId": 7,
+    "guestName": "Lisa Chen",
+    "guestPhoto": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Margaret's brownstone is a gem! Staying here feels like stepping back in time while having all modern comforts. The location in Greenwich Village is unbeatable - so much character and history. Margaret is a delightful host who shared wonderful stories about the neighborhood. The small garden is a lovely surprise!",
+    "date": "2023-12-07T00:00:00Z",
+    "stayDuration": "5 nights"
+  },
+  {
+    "Id": 14,
+    "propertyId": 7,
+    "guestName": "Thomas Wilson",
+    "guestPhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 4,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Beautiful historic brownstone in the heart of the Village! The architecture and period details are stunning. Margaret is incredibly knowledgeable about the area and provided excellent recommendations. A few creaks and quirks as expected in an old building, but it adds to the charm. Great experience!",
+    "date": "2023-11-14T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 15,
+    "propertyId": 8,
+    "guestName": "Sarah Kim",
+    "guestPhoto": "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 4,
+      "communication": 4,
+      "location": 4,
+      "value": 5
+    },
+    "comment": "David's minimalist apartment is a breath of fresh air! Everything is perfectly curated and the space feels so calm and peaceful. I loved the clean aesthetic and thoughtful design choices. Great location with easy access to downtown. Perfect for anyone who appreciates good design and simplicity!",
+    "date": "2023-12-09T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 16,
+    "propertyId": 8,
+    "guestName": "Kevin Park",
+    "guestPhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 4,
+      "checkin": 4,
+      "communication": 4,
+      "location": 4,
+      "value": 4
+    },
+    "comment": "Really enjoyed this minimalist space! It's exactly as described - clean, simple, and peaceful. David has created something special here. The location is convenient and the apartment has everything you need without any clutter. Great for a relaxing stay in Seattle!",
+    "date": "2023-11-30T00:00:00Z",
+    "stayDuration": "2 nights"
+  },
+  {
+    "Id": 17,
+    "propertyId": 9,
+    "guestName": "Michelle Roberts",
+    "guestPhoto": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Emma's farmhouse is absolutely magical! Waking up to vineyard views every morning was incredible. The house is beautifully furnished with authentic pieces, and the porch is perfect for wine tasting. Emma is a wonderful host who shared her knowledge of local wineries and even arranged a private tasting. An unforgettable wine country experience!",
+    "date": "2023-12-02T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 18,
+    "propertyId": 9,
+    "guestName": "Brian Foster",
+    "guestPhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 4,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Perfect for our wine country getaway! The farmhouse has so much character and charm. Emma went above and beyond to make our stay special, including recommendations for hidden gem wineries. The setting among the vineyards is breathtaking. We'll definitely be back!",
+    "date": "2023-11-16T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 19,
+    "propertyId": 10,
+    "guestName": "Jennifer Adams",
+    "guestPhoto": "https://images.unsplash.com/photo-1494790108755-2616b612b1e8?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Bob's cottage is a lakeside paradise! The location right on the water is unbeatable, and having a private dock makes it so special. Bob is incredibly knowledgeable about the lake and taught us the best fishing spots. The cottage is cozy and has everything you need for a perfect lake vacation. Highly recommend!",
+    "date": "2023-12-04T00:00:00Z",
+    "stayDuration": "5 nights"
+  },
+  {
+    "Id": 20,
+    "propertyId": 10,
+    "guestName": "Mark Thompson",
+    "guestPhoto": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 4,
+      "accuracy": 4,
+      "checkin": 4,
+      "communication": 5,
+      "location": 5,
+      "value": 5
+    },
+    "comment": "Great lakeside getaway! The cottage has everything you need and the location is fantastic. Bob is a wonderful host with tons of local knowledge. We caught fish right off the dock and enjoyed beautiful sunsets every night. Perfect for a relaxing vacation away from the city!",
+    "date": "2023-11-26T00:00:00Z",
+    "stayDuration": "4 nights"
+  },
+  {
+    "Id": 21,
+    "propertyId": 11,
+    "guestName": "Ashley Miller",
+    "guestPhoto": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 5,
+      "value": 4
+    },
+    "comment": "Zoe's glass house is absolutely stunning! The architecture is incredible and being surrounded by forest while having all the luxury amenities is magical. Zoe is passionate about sustainable design and shared fascinating insights about the building. Watching wildlife from the comfort of the living room was unforgettable. A truly unique experience!",
+    "date": "2023-12-06T00:00:00Z",
+    "stayDuration": "3 nights"
+  },
+  {
+    "Id": 22,
+    "propertyId": 11,
+    "guestName": "Ryan Davis",
+    "guestPhoto": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 5,
+      "location": 4,
+      "value": 5
+    },
+    "comment": "This glass house is architectural eye candy! The design is brilliant - you feel completely immersed in nature while enjoying luxury amenities. Zoe has created something truly special here. The forest setting is peaceful and the house itself is a work of art. Perfect for design enthusiasts and nature lovers alike!",
+    "date": "2023-11-19T00:00:00Z",
+    "stayDuration": "2 nights"
+  },
+  {
+    "Id": 23,
+    "propertyId": 12,
+    "guestName": "Emma Watson",
+    "guestPhoto": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
+    "rating": 5,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 5,
+      "checkin": 5,
+      "communication": 4,
+      "location": 4,
+      "value": 5
+    },
+    "comment": "Tyler's tiny house is incredibly well-designed! Every inch is thoughtfully used, and it's amazing how comfortable and functional such a small space can be. Tyler is clearly passionate about craftsmanship and sustainable living. The mountain views are beautiful, and it's a great way to experience minimalist living without sacrificing comfort. Loved it!",
+    "date": "2023-12-11T00:00:00Z",
+    "stayDuration": "2 nights"
+  },
+  {
+    "Id": 24,
+    "propertyId": 12,
+    "guestName": "Jake Wilson",
+    "guestPhoto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+    "rating": 4,
+    "ratings": {
+      "cleanliness": 5,
+      "accuracy": 4,
+      "checkin": 4,
+      "communication": 4,
+      "location": 4,
+      "value": 5
+    },
+    "comment": "Really cool tiny house experience! Tyler built something amazing here - the craftsmanship is excellent and the space is surprisingly comfortable. Great way to try out tiny house living. The location is peaceful with nice mountain views. Tyler provided helpful tips about minimalist living. Definitely recommend for anyone curious about alternative living!",
+    "date": "2023-11-21T00:00:00Z",
+    "stayDuration": "3 nights"
+  }
+]
