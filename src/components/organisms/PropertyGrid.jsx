@@ -1,70 +1,84 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { propertyService } from "@/services/api/propertyService";
 import PropertyCard from "@/components/molecules/PropertyCard";
 import Loading from "@/components/ui/Loading";
-import ErrorView from "@/components/ui/ErrorView";
 import Empty from "@/components/ui/Empty";
-import { propertyService } from "@/services/api/propertyService";
+import ErrorView from "@/components/ui/ErrorView";
 
 const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+// Filter properties based on current filters and search location
+  const filterProperties = (properties) => {
+    return properties.filter(property => {
+      // Location filter
+      if (searchLocation && searchLocation.trim()) {
+        const searchTerm = searchLocation.toLowerCase();
+        const matchesLocation = 
+          property.location.city.toLowerCase().includes(searchTerm) ||
+          property.location.country.toLowerCase().includes(searchTerm) ||
+          property.location.address.toLowerCase().includes(searchTerm) ||
+          property.title.toLowerCase().includes(searchTerm);
+        
+        if (!matchesLocation) return false;
+      }
+      
+      // Guest capacity filter
+      if (filters.guests && property.maxGuests < filters.guests) {
+        return false;
+      }
+      
+      // Price range filter
+      if (filters.priceRange) {
+        const [minPrice, maxPrice] = filters.priceRange;
+        if (property.pricePerNight < minPrice || property.pricePerNight > maxPrice) {
+          return false;
+        }
+      }
+      
+      // Property type filter
+      if (filters.propertyType && filters.propertyType !== 'all') {
+        if (property.propertyType.toLowerCase() !== filters.propertyType.toLowerCase()) {
+          return false;
+        }
+      }
+
+      // Bedrooms filter
+      if (filters.bedrooms && property.bedrooms < filters.bedrooms) {
+        return false;
+      }
+      
+      // Amenities filter
+      if (filters.amenities && filters.amenities.length > 0) {
+        const hasAllAmenities = filters.amenities.every(amenity => 
+          property.amenities.includes(amenity)
+        );
+        if (!hasAllAmenities) return false;
+      }
+      
+      // Instant Book filter
+      if (filters.instantBook && !property.instantBook) {
+        return false;
+      }
+      
+      return true;
+    });
+  };
+  
+// Load properties
   const loadProperties = async () => {
     try {
       setLoading(true);
       setError("");
       
-      const data = await propertyService.getAll();
+      const response = await propertyService.getProperties();
+      const allProperties = response?.data || [];
       
-      let filteredProperties = data;
-
-      // Apply location filter
-      if (searchLocation) {
-        filteredProperties = filteredProperties.filter(property =>
-          property.location.city.toLowerCase().includes(searchLocation.toLowerCase()) ||
-          property.location.country.toLowerCase().includes(searchLocation.toLowerCase()) ||
-          property.title.toLowerCase().includes(searchLocation.toLowerCase())
-        );
-      }
-
-      // Apply price filter
-      if (filters.priceRange) {
-        const [min, max] = filters.priceRange;
-        filteredProperties = filteredProperties.filter(property =>
-          property.pricePerNight >= min && property.pricePerNight <= max
-        );
-      }
-
-      // Apply guest filter
-      if (filters.guests) {
-        filteredProperties = filteredProperties.filter(property =>
-          property.maxGuests >= filters.guests
-        );
-      }
-
-      // Apply property type filter
-      if (filters.propertyType && filters.propertyType !== "all") {
-        filteredProperties = filteredProperties.filter(property =>
-          property.propertyType.toLowerCase() === filters.propertyType.toLowerCase()
-        );
-      }
-
-      // Apply amenities filter
-      if (filters.amenities && filters.amenities.length > 0) {
-        filteredProperties = filteredProperties.filter(property =>
-          filters.amenities.every(amenity =>
-            property.amenities.includes(amenity)
-          )
-        );
-      }
-
-      // Apply instant book filter
-      if (filters.instantBook) {
-        filteredProperties = filteredProperties.filter(property => property.instantBook);
-      }
-
+      // Apply filters to the properties
+      const filteredProperties = filterProperties(allProperties);
       setProperties(filteredProperties);
     } catch (err) {
       setError("Failed to load properties. Please try again.");

@@ -179,6 +179,30 @@ const FilterPanel = ({ filters, onFiltersChange, onClose }) => {
           </div>
         </div>
 
+{/* Bedrooms */}
+        <div className="mb-8">
+          <h4 className="font-semibold text-gray-900 mb-4">Bedrooms</h4>
+          <div className="grid grid-cols-4 gap-2">
+            {['Any', '1+', '2+', '3+', '4+', '5+'].map((option) => (
+              <button
+                key={option}
+                onClick={() => setLocalFilters({ 
+                  ...localFilters, 
+                  bedrooms: option === 'Any' ? null : parseInt(option.replace('+', ''))
+                })}
+                className={`p-3 rounded-xl border text-sm font-medium transition-colors ${
+                  (localFilters.bedrooms === null && option === 'Any') ||
+                  (localFilters.bedrooms === parseInt(option.replace('+', '')))
+                    ? 'border-primary bg-primary text-white'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Instant Book */}
         <div className="mb-8">
           <label className="flex items-center gap-3 cursor-pointer">

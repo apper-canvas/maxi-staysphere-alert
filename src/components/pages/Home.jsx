@@ -81,6 +81,13 @@ const Home = () => {
       });
     }
     
+if (filters.bedrooms) {
+      chips.push({
+        key: "bedrooms",
+        label: `${filters.bedrooms}+ bedrooms`
+      });
+    }
+
     if (filters.amenities && filters.amenities.length > 0) {
       filters.amenities.forEach(amenity => {
         chips.push({
