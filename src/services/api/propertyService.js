@@ -135,3 +135,5 @@ export const propertyService = {
     return true;
   }
 };
+
+export default propertyService;
