@@ -19,10 +19,13 @@ const Home = () => {
     const location = searchParams.get("location");
     const guests = searchParams.get("guests");
     const priceMin = searchParams.get("priceMin");
-    const priceMax = searchParams.get("priceMax");
+const priceMax = searchParams.get("priceMax");
+    const propertyType = searchParams.get("propertyType");
+    const amenities = searchParams.get("amenities");
+    const instantBook = searchParams.get("instantBook");
+    const superhost = searchParams.get("superhost");
     
     if (location) setSearchLocation(location);
-    
     const urlFilters = {};
     if (guests) urlFilters.guests = parseInt(guests);
     if (priceMin && priceMax) urlFilters.priceRange = [parseInt(priceMin), parseInt(priceMax)];
@@ -92,9 +95,42 @@ const Home = () => {
     }
     
     if (filters.instantBook) {
-      chips.push({
+chips.push({
         key: "instantBook",
         label: "Instant Book"
+      });
+    }
+
+    if (propertyType) {
+      chips.push({
+        key: "propertyType",
+        label: propertyType
+      });
+    }
+
+    if (amenities) {
+      const amenityList = amenities.split(",");
+      amenityList.forEach(amenity => {
+        chips.push({
+          key: `amenity-${amenity}`,
+          label: amenity.charAt(0).toUpperCase() + amenity.slice(1)
+        });
+      });
+    }
+
+    if (superhost === "true") {
+      chips.push({
+        key: "superhost",
+        label: "Superhost"
+      });
+    }
+
+    if (priceMin || priceMax) {
+      const min = priceMin || "0";
+      const max = priceMax || "∞";
+      chips.push({
+        key: "priceRange",
+        label: `$${min} - $${max}`
       });
     }
     

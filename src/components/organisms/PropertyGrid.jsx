@@ -59,7 +59,20 @@ const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
           )
         );
       }
-
+const searchProperties = async (searchFilters) => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const results = await propertyService.search(searchFilters);
+        setProperties(results);
+      } catch (err) {
+        setError("Failed to search properties. Please try again.");
+        console.error("Property search error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
       // Apply instant book filter
       if (filters.instantBook) {
         filteredProperties = filteredProperties.filter(property => property.instantBook);
