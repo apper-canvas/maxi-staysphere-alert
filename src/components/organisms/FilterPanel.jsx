@@ -364,7 +364,4 @@ function clearFilters() {
     </motion.div>
   );
 };
-
-export default FilterPanel;
-
 export default FilterPanel;
