@@ -1,0 +1,137 @@
+[
+  {
+    "Id": 1,
+    "bookingId": 1,
+    "senderId": "guest_001",
+    "senderType": "guest",
+    "content": "Hi! I'm excited about my upcoming stay. Could you please let me know the check-in process?",
+    "createdAt": "2023-12-21T09:15:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 2,
+    "bookingId": 1,
+    "senderId": "host_001",
+    "senderType": "host",
+    "content": "Hello! Welcome to my property. Check-in is from 3 PM onwards. I'll send you the access code the day before your arrival.",
+    "createdAt": "2023-12-21T10:30:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 3,
+    "bookingId": 1,
+    "senderId": "guest_001",
+    "senderType": "guest",
+    "content": "Perfect! Is parking available on the property?",
+    "createdAt": "2023-12-21T11:45:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 4,
+    "bookingId": 1,
+    "senderId": "host_001",
+    "senderType": "host",
+    "content": "Yes, there's free parking right in front of the building. Look for spot #12.",
+    "createdAt": "2023-12-21T12:20:00Z",
+    "isRead": false
+  },
+  {
+    "Id": 5,
+    "bookingId": 2,
+    "senderId": "guest_002",
+    "senderType": "guest",
+    "content": "Hello! We're bringing 8 people for our group trip. Are there enough towels and bedding for everyone?",
+    "createdAt": "2023-12-19T08:30:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 6,
+    "bookingId": 2,
+    "senderId": "host_002",
+    "senderType": "host",
+    "content": "Hi there! Yes, the house is fully equipped for 8 guests. Fresh towels and linens are provided for everyone. Extra blankets are in the hall closet.",
+    "createdAt": "2023-12-19T09:45:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 7,
+    "bookingId": 2,
+    "senderId": "guest_002",
+    "senderType": "guest",
+    "content": "Wonderful! One more question - is the hot tub available during our stay?",
+    "createdAt": "2023-12-19T14:20:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 8,
+    "bookingId": 2,
+    "senderId": "host_002",
+    "senderType": "host",
+    "content": "Absolutely! The hot tub is heated and ready to use. Just remember to put the cover back on when you're done. Enjoy your stay!",
+    "createdAt": "2023-12-19T15:10:00Z",
+    "isRead": false
+  },
+  {
+    "Id": 9,
+    "bookingId": 3,
+    "senderId": "guest_003",
+    "senderType": "guest",
+    "content": "Hi! I'll be arriving quite late around 11 PM. Is late check-in possible?",
+    "createdAt": "2023-12-22T16:30:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 10,
+    "bookingId": 3,
+    "senderId": "host_003",
+    "senderType": "host",
+    "content": "No problem at all! The door has a smart lock with a code. I'll text you the code on the day of arrival. Safe travels!",
+    "createdAt": "2023-12-22T17:15:00Z",
+    "isRead": false
+  },
+  {
+    "Id": 11,
+    "bookingId": 4,
+    "senderId": "guest_004",
+    "senderType": "guest",
+    "content": "Hello! We're planning to celebrate a birthday during our stay. Are there any noise restrictions we should be aware of?",
+    "createdAt": "2023-12-26T10:00:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 12,
+    "bookingId": 4,
+    "senderId": "host_004",
+    "senderType": "host",
+    "content": "Happy early birthday! Please keep music and celebrations at a reasonable level after 10 PM out of respect for the neighbors. Have a great time!",
+    "createdAt": "2023-12-26T11:30:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 13,
+    "bookingId": 4,
+    "senderId": "guest_004",
+    "senderType": "guest",
+    "content": "Of course, we'll be respectful! Thanks for accommodating our celebration.",
+    "createdAt": "2023-12-26T12:45:00Z",
+    "isRead": false
+  },
+  {
+    "Id": 14,
+    "bookingId": 5,
+    "senderId": "guest_005",
+    "senderType": "guest",
+    "content": "Hi there! I noticed this is a pending booking. When can I expect confirmation?",
+    "createdAt": "2024-01-02T14:20:00Z",
+    "isRead": true
+  },
+  {
+    "Id": 15,
+    "bookingId": 5,
+    "senderId": "host_005",
+    "senderType": "host",
+    "content": "Hello! I'll review your booking request today and get back to you within 24 hours. Thanks for your patience!",
+    "createdAt": "2024-01-02T15:45:00Z",
+    "isRead": false
+  }
+]
