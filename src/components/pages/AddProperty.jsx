@@ -1,12 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
+import PhotoUpload from "@/components/molecules/PhotoUpload";
+import { propertyService } from "@/services/api/propertyService";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
 import Card from "@/components/atoms/Card";
-import { propertyService } from "@/services/api/propertyService";
+import Input from "@/components/atoms/Input";
 
 const PROPERTY_TYPES = [
   { value: 'entire_place', label: 'Entire place', description: 'Guests have the whole place to themselves' },
@@ -19,7 +20,7 @@ function AddProperty() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: '',
     description: '',
     address: '',
@@ -27,16 +28,18 @@ function AddProperty() {
     bedrooms: 1,
     bathrooms: 1,
     maxGuests: 1,
+    photos: [],
     pricePerNight: ''
   });
 
   const [errors, setErrors] = useState({});
 
-  const steps = [
+const steps = [
     { number: 1, title: 'Basic Info', description: 'Tell us about your property' },
     { number: 2, title: 'Property Details', description: 'Room and guest information' },
-    { number: 3, title: 'Pricing', description: 'Set your nightly rate' },
-    { number: 4, title: 'Review & Submit', description: 'Double-check everything' }
+    { number: 3, title: 'Photos', description: 'Upload property images' },
+    { number: 4, title: 'Pricing', description: 'Set your nightly rate' },
+    { number: 5, title: 'Review & Submit', description: 'Double-check everything' }
   ];
 
   const validateStep = (step) => {
@@ -55,7 +58,13 @@ function AddProperty() {
       if (formData.maxGuests < 1) newErrors.maxGuests = 'At least 1 guest required';
     }
     
-    if (step === 3) {
+if (step === 3) {
+      if (formData.photos.length === 0) {
+        newErrors.photos = 'At least one photo is required';
+      }
+    }
+    
+    if (step === 4) {
       if (!formData.pricePerNight || parseFloat(formData.pricePerNight) <= 0) {
         newErrors.pricePerNight = 'Valid price per night is required';
       }
@@ -66,8 +75,8 @@ function AddProperty() {
   };
 
   const handleNext = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 4));
+if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 5));
     }
   };
 
@@ -76,7 +85,7 @@ function AddProperty() {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(4)) return;
+if (!validateStep(5)) return;
     
     setLoading(true);
     try {
@@ -87,7 +96,7 @@ function AddProperty() {
         bathrooms: parseInt(formData.bathrooms),
         maxGuests: parseInt(formData.maxGuests),
         pricePerNight: parseFloat(formData.pricePerNight),
-        images: ['/api/placeholder/800/600'], // Default placeholder
+        images: formData.photos.length > 0 ? formData.photos : ['/api/placeholder/800/600'],
         amenities: [],
         rating: 0,
         reviewCount: 0,
@@ -234,9 +243,28 @@ function AddProperty() {
           </div>
         );
         
-      case 3:
+case 3:
         return (
           <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Add Photos</h3>
+              <p className="text-gray-600">Upload photos to showcase your property</p>
+            </div>
+            <PhotoUpload 
+              photos={formData.photos} 
+              onPhotosChange={(photos) => updateFormData('photos', photos)} 
+            />
+            {errors.photos && <p className="text-red-500 text-sm mt-1">{errors.photos}</p>}
+          </div>
+        );
+case 4:
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Set Your Pricing</h3>
+              <p className="text-gray-600">What would you like to charge per night?</p>
+            </div>
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Price per night (USD)
@@ -259,39 +287,62 @@ function AddProperty() {
               </p>
             </div>
           </div>
-        );
-        
-      case 4:
+      
+      case 5:
         return (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Review Your Listing</h3>
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Review Your Listing</h3>
+              <p className="text-gray-600">Make sure everything looks correct before submitting</p>
+            </div>
             
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 mb-2">{formData.name}</h4>
-                <p className="text-gray-600 text-sm mb-2">{formData.description}</p>
-                <p className="text-gray-500 text-sm">{formData.address}</p>
+                <h5 className="font-medium text-gray-900 mb-2">Basic Information</h5>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>Name: {formData.name}</li>
+                  <li>Address: {formData.address}</li>
+                  <li>Description: {formData.description?.substring(0, 100)}{formData.description?.length > 100 ? '...' : ''}</li>
+                </ul>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h5 className="font-medium text-gray-900 mb-2">Property Details</h5>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>Type: {PROPERTY_TYPES.find(t => t.value === formData.propertyType)?.label}</li>
-                    <li>Bedrooms: {formData.bedrooms}</li>
-                    <li>Bathrooms: {formData.bathrooms}</li>
-                    <li>Max Guests: {formData.maxGuests}</li>
-                  </ul>
-                </div>
-                
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h5 className="font-medium text-gray-900 mb-2">Pricing</h5>
-                  <p className="text-2xl font-bold text-primary">${formData.pricePerNight}</p>
-                  <p className="text-sm text-gray-500">per night</p>
-                </div>
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h5 className="font-medium text-gray-900 mb-2">Property Details</h5>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>Type: {PROPERTY_TYPES.find(t => t.value === formData.propertyType)?.label}</li>
+                  <li>Bedrooms: {formData.bedrooms}</li>
+                  <li>Bathrooms: {formData.bathrooms}</li>
+                  <li>Max Guests: {formData.maxGuests}</li>
+                </ul>
+              </div>
+              
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h5 className="font-medium text-gray-900 mb-2">Photos ({formData.photos.length})</h5>
+                {formData.photos.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    {formData.photos.slice(0, 4).map((photo, index) => (
+                      <div key={index} className="relative">
+                        <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-16 object-cover rounded" />
+                        {index === 0 && (
+                          <div className="absolute top-1 left-1 bg-primary text-white text-xs px-1 py-0.5 rounded">
+                            Main
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">No photos uploaded</p>
+                )}
+              </div>
+              
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h5 className="font-medium text-gray-900 mb-2">Pricing</h5>
+                <p className="text-2xl font-bold text-primary">${formData.pricePerNight}</p>
+                <p className="text-sm text-gray-500">per night</p>
               </div>
             </div>
-          </div>
+</div>
         );
         
       default:
@@ -322,8 +373,8 @@ function AddProperty() {
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  currentStep >= step.number 
-                    ? 'bg-primary text-white' 
+currentStep >= step.number 
+                    ? 'bg-primary text-white'
                     : 'bg-gray-200 text-gray-500'
                 }`}>
                   {step.number}
@@ -371,7 +422,7 @@ function AddProperty() {
             Previous
           </Button>
           
-          {currentStep < 4 ? (
+{currentStep < 5 ? (
             <Button onClick={handleNext}>
               Next
             </Button>

@@ -13,12 +13,16 @@ export const propertyService = {
     return properties.find(property => property.Id === id) || null;
   },
 
-  async create(propertyData) {
+async create(propertyData) {
     await delay(400);
     const newProperty = {
       ...propertyData,
       Id: Math.max(...properties.map(p => p.Id)) + 1,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      // Ensure images array exists and has at least a placeholder
+      images: propertyData.images && propertyData.images.length > 0 
+        ? propertyData.images 
+        : ['/api/placeholder/800/600']
     };
     properties.push(newProperty);
     return newProperty;
