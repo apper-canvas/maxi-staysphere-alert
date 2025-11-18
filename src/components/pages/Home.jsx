@@ -14,25 +14,18 @@ const Home = () => {
   const [filters, setFilters] = useState({});
   const [searchLocation, setSearchLocation] = useState("");
 
-// Initialize from URL params
+  // Initialize from URL params
   useEffect(() => {
     const location = searchParams.get("location");
     const guests = searchParams.get("guests");
     const priceMin = searchParams.get("priceMin");
     const priceMax = searchParams.get("priceMax");
-    const propertyType = searchParams.get("propertyType");
-    const amenities = searchParams.get("amenities");
-    const instantBook = searchParams.get("instantBook");
-    const superhost = searchParams.get("superhost");
     
     if (location) setSearchLocation(location);
+    
     const urlFilters = {};
     if (guests) urlFilters.guests = parseInt(guests);
     if (priceMin && priceMax) urlFilters.priceRange = [parseInt(priceMin), parseInt(priceMax)];
-    if (propertyType && propertyType !== "all") urlFilters.propertyType = propertyType;
-    if (amenities) urlFilters.amenities = amenities.split(",");
-    if (instantBook === "true") urlFilters.instantBook = true;
-    if (superhost === "true") urlFilters.superhost = true;
     
     if (Object.keys(urlFilters).length > 0) {
       setFilters(urlFilters);
@@ -64,7 +57,7 @@ const Home = () => {
     setFilters(newFilters);
   };
 
-const getActiveFilterChips = () => {
+  const getActiveFilterChips = () => {
     const chips = [];
     
     if (filters.priceRange) {
@@ -102,13 +95,6 @@ const getActiveFilterChips = () => {
       chips.push({
         key: "instantBook",
         label: "Instant Book"
-      });
-    }
-
-    if (filters.superhost) {
-      chips.push({
-        key: "superhost",
-        label: "Superhost"
       });
     }
     

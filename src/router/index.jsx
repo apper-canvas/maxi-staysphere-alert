@@ -6,7 +6,6 @@ const Home = lazy(() => import("@/components/pages/Home"));
 const PropertyDetails = lazy(() => import("@/components/pages/PropertyDetails"));
 const SearchResults = lazy(() => import("@/components/pages/SearchResults"));
 const HostProfile = lazy(() => import("@/components/pages/HostProfile"));
-const WishlistsPage = lazy(() => import("@/components/pages/WishlistsPage"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
 
 const LoadingSpinner = () => (
@@ -38,19 +37,11 @@ const mainRoutes = [
       </Suspense>
     ),
   },
-{
+  {
     path: "search",
     element: (
       <Suspense fallback={<LoadingSpinner />}>
         <SearchResults />
-      </Suspense>
-    ),
-  },
-  {
-    path: "wishlists",
-    element: (
-      <Suspense fallback={<LoadingSpinner />}>
-        <WishlistsPage />
       </Suspense>
     ),
   },

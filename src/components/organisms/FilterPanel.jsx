@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Chart from "react-apexcharts";
-import { propertyService } from "@/services/api/propertyService";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
-import FilterChip from "@/components/molecules/FilterChip";
 import Button from "@/components/atoms/Button";
+import FilterChip from "@/components/molecules/FilterChip";
 
 const FilterPanel = ({ filters, onFiltersChange, onClose }) => {
   const [localFilters, setLocalFilters] = useState(filters);
@@ -20,82 +18,30 @@ const FilterPanel = ({ filters, onFiltersChange, onClose }) => {
     setLocalFilters({ ...localFilters, guests });
   };
 
-const [priceRanges, setPriceRanges] = useState([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-
-  useEffect(() => {
-    const loadPriceRanges = async () => {
-      try {
-        const ranges = await propertyService.getPriceRanges();
-        setPriceRanges(ranges || []);
-      } catch (error) {
-        console.error('Failed to load price ranges:', error);
-        setPriceRanges([]);
-      }
-    };
-    loadPriceRanges();
-  }, []);
-
-const handlePropertyTypeChange = (type) => {
-    const updatedFilters = type && type !== 'all' 
-      ? { ...localFilters, propertyType: type }
-      : { ...localFilters, propertyType: undefined };
-    setLocalFilters(updatedFilters);
-    onFiltersChange(updatedFilters);
+  const handlePropertyTypeChange = (type) => {
+    setLocalFilters({ ...localFilters, propertyType: type });
   };
 
-const handleAmenityToggle = (amenity) => {
+  const handleAmenityToggle = (amenity) => {
     const currentAmenities = localFilters.amenities || [];
     const updatedAmenities = currentAmenities.includes(amenity)
       ? currentAmenities.filter(a => a !== amenity)
       : [...currentAmenities, amenity];
-    
-    const updatedFilters = {
-      ...localFilters,
-      amenities: updatedAmenities.length > 0 ? updatedAmenities : undefined
-    };
-    setLocalFilters(updatedFilters);
-    onFiltersChange(updatedFilters);
+    setLocalFilters({ ...localFilters, amenities: updatedAmenities });
   };
 
-  const handleInstantBookChange = (enabled) => {
-    const updatedFilters = {
-      ...localFilters,
-      instantBook: enabled || undefined
-    };
-    setLocalFilters(updatedFilters);
-    onFiltersChange(updatedFilters);
+  const applyFilters = () => {
+    onFiltersChange(localFilters);
+    onClose?.();
   };
 
-  const handleSuperhostChange = (enabled) => {
-    const updatedFilters = {
-      ...localFilters,
-      superhost: enabled || undefined
-    };
-    setLocalFilters(updatedFilters);
-    onFiltersChange(updatedFilters);
+  const clearFilters = () => {
+    const clearedFilters = {};
+    setLocalFilters(clearedFilters);
+    onFiltersChange(clearedFilters);
   };
 
-  const handlePriceRangeSelect = (rangeIndex) => {
-    if (selectedPriceRange === rangeIndex) {
-      setSelectedPriceRange(null);
-      const { priceMin, priceMax, ...rest } = localFilters;
-      setLocalFilters(rest);
-      onFiltersChange(rest);
-    } else {
-      setSelectedPriceRange(rangeIndex);
-      const range = priceRanges[rangeIndex];
-      const updatedFilters = {
-        ...localFilters,
-        priceMin: range.min,
-        priceMax: range.max
-      };
-      setLocalFilters(updatedFilters);
-      onFiltersChange(updatedFilters);
-    }
-  };
-
-const propertyTypes = [
+  const propertyTypes = [
     { id: "all", label: "Any type", icon: "Home" },
     { id: "house", label: "House", icon: "Home" },
     { id: "apartment", label: "Apartment", icon: "Building" },
@@ -103,7 +49,7 @@ const propertyTypes = [
     { id: "villa", label: "Villa", icon: "Castle" },
   ];
 
-  const availableAmenities = [
+  const amenities = [
     { id: "wifi", label: "Wifi", icon: "Wifi" },
     { id: "kitchen", label: "Kitchen", icon: "ChefHat" },
     { id: "washer", label: "Washer", icon: "Shirt" },
@@ -117,62 +63,6 @@ const propertyTypes = [
     { id: "hotTub", label: "Hot tub", icon: "Bath" },
     { id: "fireplace", label: "Fireplace", icon: "Flame" },
   ];
-const histogramOptions = {
-    chart: {
-      type: 'column',
-      height: 200,
-      toolbar: { show: false },
-      events: {
-        dataPointSelection: (event, chartContext, config) => {
-          handlePriceRangeSelect(config.dataPointIndex);
-        }
-      }
-    },
-    plotOptions: {
-      bar: {
-        columnWidth: '80%',
-        borderRadius: 4,
-        colors: {
-          backgroundBarColors: ['#f3f4f6'],
-          backgroundBarRadius: 4,
-        }
-      }
-    },
-    dataLabels: { enabled: false },
-    xaxis: {
-      categories: priceRanges.map(range => `$${range.min}-$${range.max}`),
-      labels: { 
-        style: { fontSize: '12px', colors: '#6b7280' },
-        rotate: -45
-      }
-    },
-    yaxis: {
-      labels: { style: { fontSize: '12px', colors: '#6b7280' } }
-    },
-    colors: priceRanges.map((_, index) => 
-      selectedPriceRange === index ? '#FF5A5F' : '#e5e7eb'
-    ),
-    tooltip: {
-      y: { formatter: (value) => `${value} properties` }
-    },
-    grid: { show: false }
-  };
-
-  const histogramSeries = [{
-    name: 'Properties',
-    data: priceRanges.map(range => range.count || 0)
-  }];
-function clearFilters() {
-    const clearedFilters = {};
-    setLocalFilters(clearedFilters);
-    onFiltersChange(clearedFilters);
-    setSelectedPriceRange(null);
-  }
-
-  function applyFilters() {
-    onFiltersChange(localFilters);
-    if (onClose) onClose();
-  }
 
   return (
     <motion.div
@@ -272,7 +162,7 @@ function clearFilters() {
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Amenities</h3>
           <div className="grid grid-cols-2 gap-3">
-            {availableAmenities.map((amenity) => (
+            {amenities.map((amenity) => (
               <button
                 key={amenity.id}
                 onClick={() => handleAmenityToggle(amenity.id)}
@@ -289,67 +179,21 @@ function clearFilters() {
           </div>
         </div>
 
-        {/* Active Filters */}
-        {(localFilters.propertyType || 
-          localFilters.amenities?.length > 0 || 
-          localFilters.instantBook || 
-          localFilters.superhost || 
-          localFilters.priceMin) && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Active Filters</h3>
-            <div className="flex flex-wrap gap-2">
-              {localFilters.propertyType && (
-                <FilterChip
-                  label={localFilters.propertyType}
-                  active={true}
-                  removable={true}
-                  onRemove={() => handlePropertyTypeChange(null)}
-                />
-              )}
-              {localFilters.amenities?.map((amenity) => {
-                const amenityInfo = availableAmenities.find(a => a.id === amenity);
-                return (
-                  <FilterChip
-                    key={amenity}
-                    label={amenityInfo?.label || amenity}
-                    active={true}
-                    removable={true}
-                    onRemove={() => handleAmenityToggle(amenity)}
-                  />
-                );
-              })}
-              {localFilters.instantBook && (
-                <FilterChip
-                  label="Instant Book"
-                  active={true}
-                  removable={true}
-                  onRemove={() => handleInstantBookChange(false)}
-                />
-              )}
-              {localFilters.superhost && (
-                <FilterChip
-                  label="Superhost"
-                  active={true}
-                  removable={true}
-                  onRemove={() => handleSuperhostChange(false)}
-                />
-              )}
-              {localFilters.priceMin && (
-                <FilterChip
-                  label={`$${localFilters.priceMin}-$${localFilters.priceMax}`}
-                  active={true}
-                  removable={true}
-                  onRemove={() => {
-                    setSelectedPriceRange(null);
-                    const { priceMin, priceMax, ...rest } = localFilters;
-                    setLocalFilters(rest);
-                    onFiltersChange(rest);
-                  }}
-                />
-              )}
+        {/* Instant Book */}
+        <div className="mb-8">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={localFilters.instantBook || false}
+              onChange={(e) => setLocalFilters({ ...localFilters, instantBook: e.target.checked })}
+              className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+            />
+            <div>
+              <div className="font-medium text-gray-900">Instant Book</div>
+              <div className="text-sm text-gray-500">Listings you can book without waiting for approval</div>
             </div>
-          </div>
-        )}
+          </label>
+        </div>
 
         {/* Actions */}
         <div className="flex gap-3 pt-6 border-t border-gray-200">
@@ -364,4 +208,5 @@ function clearFilters() {
     </motion.div>
   );
 };
+
 export default FilterPanel;

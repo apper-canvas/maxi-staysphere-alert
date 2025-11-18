@@ -19,12 +19,8 @@ const SearchResults = () => {
     const guests = searchParams.get("guests");
     const checkIn = searchParams.get("checkIn");
     const checkOut = searchParams.get("checkOut");
-const priceMin = searchParams.get("priceMin");
+    const priceMin = searchParams.get("priceMin");
     const priceMax = searchParams.get("priceMax");
-    const propertyType = searchParams.get("propertyType");
-    const amenities = searchParams.get("amenities");
-    const instantBook = searchParams.get("instantBook");
-    const superhost = searchParams.get("superhost");
     
     setSearchLocation(location);
     
@@ -56,11 +52,7 @@ const priceMin = searchParams.get("priceMin");
     
     // Clear existing filter params
     params.delete("priceMin");
-params.delete("priceMax");
-    params.delete("propertyType");
-    params.delete("amenities");
-    params.delete("instantBook");
-    params.delete("superhost");
+    params.delete("priceMax");
     params.delete("propertyType");
     
     // Add new filter params
@@ -130,48 +122,10 @@ params.delete("priceMax");
         label: "Instant Book"
       });
     }
-if (searchParams.get("propertyType")) {
-      chips.push({
-        key: "propertyType",
-        label: searchParams.get("propertyType")
-      });
-    }
-
-    if (searchParams.get("amenities")) {
-      const amenities = searchParams.get("amenities").split(",");
-      amenities.forEach(amenity => {
-        chips.push({
-          key: `amenity-${amenity}`,
-          label: amenity.charAt(0).toUpperCase() + amenity.slice(1)
-        });
-      });
-    }
-
-    if (searchParams.get("instantBook") === "true") {
-      chips.push({
-        key: "instantBook",
-        label: "Instant Book"
-      });
-    }
-
-    if (searchParams.get("superhost") === "true") {
-      chips.push({
-        key: "superhost",
-        label: "Superhost"
-      });
-    }
-
-    if (searchParams.get("priceMin") || searchParams.get("priceMax")) {
-      const min = searchParams.get("priceMin") || "0";
-      const max = searchParams.get("priceMax") || "∞";
-      chips.push({
-        key: "priceRange",
-        label: `$${min} - $${max}`
-      });
-    }
-
+    
     return chips;
   };
+
   const activeFilters = getActiveFilterChips();
   const hasActiveFilters = activeFilters.length > 0;
 

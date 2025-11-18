@@ -20,9 +20,9 @@ const Header = () => {
     setShowSearch(false);
   };
 
-const navItems = [
+  const navItems = [
     { label: "Explore", href: "/", icon: "Compass" },
-    { label: "Wishlists", href: "/wishlists", icon: "Heart" },
+    { label: "Saved", href: "/saved", icon: "Heart" },
     { label: "Trips", href: "/trips", icon: "Calendar" },
     { label: "Messages", href: "/messages", icon: "MessageCircle" },
   ];

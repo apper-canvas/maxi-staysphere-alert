@@ -9,8 +9,6 @@ import ErrorView from "@/components/ui/ErrorView";
 import { propertyService } from "@/services/api/propertyService";
 import { hostService } from "@/services/api/hostService";
 import { reviewService } from "@/services/api/reviewService";
-import { wishlistService } from "@/services/api/wishlistService";
-import { toast } from "react-toastify";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -19,11 +17,10 @@ const PropertyDetails = () => {
   const [host, setHost] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [wishlistLoading, setWishlistLoading] = useState(false);
+
   const loadPropertyDetails = async () => {
     try {
       setLoading(true);
@@ -52,59 +49,10 @@ const [error, setError] = useState("");
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
     loadPropertyDetails();
-    checkFavoriteStatus();
   }, [id]);
 
-  const checkFavoriteStatus = async () => {
-    try {
-      if (property?.Id) {
-        const favorited = await wishlistService.isPropertyFavorited(property.Id);
-        setIsFavorite(favorited);
-      }
-    } catch (error) {
-      console.error('Error checking favorite status:', error);
-    }
-  };
-
-  const handleFavoriteClick = async () => {
-    if (wishlistLoading || !property) return;
-    
-    setWishlistLoading(true);
-    
-    try {
-      if (isFavorite) {
-        // Find wishlist containing this property and remove it
-        const wishlist = await wishlistService.getWishlistByProperty(property.Id);
-        if (wishlist) {
-          await wishlistService.removeProperty(wishlist.Id, property.Id);
-          setIsFavorite(false);
-          toast.success("Removed from favorites", {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      } else {
-        // Add to default wishlist
-        const defaultWishlist = await wishlistService.getDefaultWishlist();
-        await wishlistService.addProperty(defaultWishlist.Id, property.Id);
-        setIsFavorite(true);
-        toast.success("Added to favorites", {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    } catch (error) {
-      toast.error("Failed to update wishlist", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      console.error('Error updating wishlist:', error);
-    } finally {
-      setWishlistLoading(false);
-    }
-  };
   const handleImageClick = (index) => {
     setSelectedImage(index);
     setShowGallery(true);
@@ -175,26 +123,7 @@ useEffect(() => {
           <RatingDisplay rating={property.rating} reviewCount={property.reviewCount} />
           <span>•</span>
           <span>{property.location.address}, {property.location.city}, {property.location.country}</span>
-</div>
-
-        {/* Wishlist Button */}
-        <motion.div 
-          className="fixed bottom-6 right-6 z-10"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <button
-            onClick={handleFavoriteClick}
-            disabled={wishlistLoading}
-            className="w-14 h-14 bg-white shadow-lg rounded-full flex items-center justify-center hover:shadow-xl transition-all duration-300 disabled:opacity-50"
-          >
-            <ApperIcon 
-              name="Heart" 
-              className={`w-6 h-6 transition-colors ${isFavorite ? 'text-primary fill-current heart-bounce' : 'text-gray-600 hover:text-primary'} ${wishlistLoading ? 'animate-pulse' : ''}`}
-            />
-          </button>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* Image Gallery */}
