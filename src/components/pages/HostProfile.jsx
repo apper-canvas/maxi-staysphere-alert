@@ -1,25 +1,25 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import PropertyCard from "@/components/molecules/PropertyCard";
-import RatingDisplay from "@/components/molecules/RatingDisplay";
-import Badge from "@/components/atoms/Badge";
-import Loading from "@/components/ui/Loading";
-import ErrorView from "@/components/ui/ErrorView";
 import { hostService } from "@/services/api/hostService";
 import { propertyService } from "@/services/api/propertyService";
 import { reviewService } from "@/services/api/reviewService";
+import ApperIcon from "@/components/ApperIcon";
+import PropertyCard from "@/components/molecules/PropertyCard";
+import RatingDisplay from "@/components/molecules/RatingDisplay";
+import Loading from "@/components/ui/Loading";
+import ErrorView from "@/components/ui/ErrorView";
+import Button from "@/components/atoms/Button";
+import Badge from "@/components/atoms/Badge";
 
 const HostProfile = () => {
-  const { id } = useParams();
+const { id } = useParams();
   const navigate = useNavigate();
   const [host, setHost] = useState(null);
   const [properties, setProperties] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const loadHostData = async () => {
     try {
       setLoading(true);
@@ -174,10 +174,19 @@ const HostProfile = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-      >
-        <h2 className="text-2xl font-display font-bold text-gray-900 mb-6">
-          {host.name}'s listings ({properties.length})
-        </h2>
+>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-display font-bold text-gray-900">
+            {host.name}'s listings ({properties.length})
+          </h2>
+          <Button 
+            onClick={() => navigate('/add-property')}
+            className="flex items-center gap-2"
+          >
+            <ApperIcon name="Plus" size={16} />
+            Add Property
+          </Button>
+        </div>
         
         {properties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

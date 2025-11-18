@@ -6,6 +6,7 @@ const Home = lazy(() => import("@/components/pages/Home"));
 const PropertyDetails = lazy(() => import("@/components/pages/PropertyDetails"));
 const SearchResults = lazy(() => import("@/components/pages/SearchResults"));
 const HostProfile = lazy(() => import("@/components/pages/HostProfile"));
+const AddProperty = lazy(() => import("@/components/pages/AddProperty"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
 
 const LoadingSpinner = () => (
@@ -46,10 +47,18 @@ const mainRoutes = [
     ),
   },
   {
-    path: "host/:id",
+path: "host/:id",
     element: (
       <Suspense fallback={<LoadingSpinner />}>
         <HostProfile />
+      </Suspense>
+    ),
+  },
+  {
+    path: "add-property",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <AddProperty />
       </Suspense>
     ),
   },
