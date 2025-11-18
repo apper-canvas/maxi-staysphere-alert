@@ -170,8 +170,7 @@ if (!validateStep(5)) return;
             </div>
           </div>
         );
-        
-      case 2:
+case 2:
         return (
           <div className="space-y-6">
             <div>
@@ -242,7 +241,6 @@ if (!validateStep(5)) return;
             </div>
           </div>
         );
-        
 case 3:
         return (
           <div className="space-y-6">
@@ -256,8 +254,9 @@ case 3:
             />
             {errors.photos && <p className="text-red-500 text-sm mt-1">{errors.photos}</p>}
           </div>
-        );
-case 4:
+);
+        
+      case 4:
         return (
           <div className="space-y-6">
             <div className="text-center mb-6">
@@ -287,7 +286,8 @@ case 4:
               </p>
             </div>
           </div>
-      
+);
+        
       case 5:
         return (
           <div className="space-y-6">
