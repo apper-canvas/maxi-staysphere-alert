@@ -190,7 +190,6 @@ const HostManagement = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Property Details</h3>
               <p className="text-gray-600">Property details management will be implemented here.</p>
             </Card>
-          )}
 )}
 
           {activeTab === 'bookings' && (
