@@ -162,6 +162,18 @@ const histogramOptions = {
     name: 'Properties',
     data: priceRanges.map(range => range.count || 0)
   }];
+function clearFilters() {
+    const clearedFilters = {};
+    setLocalFilters(clearedFilters);
+    onFiltersChange(clearedFilters);
+    setSelectedPriceRange(null);
+  }
+
+  function applyFilters() {
+    onFiltersChange(localFilters);
+    if (onClose) onClose();
+  }
+
   return (
     <motion.div
       className="bg-white rounded-2xl shadow-2xl border border-gray-100 max-h-[80vh] overflow-y-auto"
@@ -256,7 +268,7 @@ const histogramOptions = {
           </div>
         </div>
 
-{/* Amenities */}
+        {/* Amenities */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Amenities</h3>
           <div className="grid grid-cols-2 gap-3">
@@ -276,9 +288,8 @@ const histogramOptions = {
             ))}
           </div>
         </div>
-        </div>
 
-{/* Active Filters */}
+        {/* Active Filters */}
         {(localFilters.propertyType || 
           localFilters.amenities?.length > 0 || 
           localFilters.instantBook || 
@@ -295,7 +306,7 @@ const histogramOptions = {
                   onRemove={() => handlePropertyTypeChange(null)}
                 />
               )}
-{localFilters.amenities?.map((amenity) => {
+              {localFilters.amenities?.map((amenity) => {
                 const amenityInfo = availableAmenities.find(a => a.id === amenity);
                 return (
                   <FilterChip
@@ -339,6 +350,7 @@ const histogramOptions = {
             </div>
           </div>
         )}
+
         {/* Actions */}
         <div className="flex gap-3 pt-6 border-t border-gray-200">
           <Button variant="outline" onClick={clearFilters} className="flex-1">
@@ -348,9 +360,11 @@ const histogramOptions = {
             Show properties
           </Button>
         </div>
-</div>
+      </div>
     </motion.div>
   );
 };
+
+export default FilterPanel;
 
 export default FilterPanel;

@@ -14,12 +14,12 @@ const Home = () => {
   const [filters, setFilters] = useState({});
   const [searchLocation, setSearchLocation] = useState("");
 
-  // Initialize from URL params
+// Initialize from URL params
   useEffect(() => {
     const location = searchParams.get("location");
     const guests = searchParams.get("guests");
     const priceMin = searchParams.get("priceMin");
-const priceMax = searchParams.get("priceMax");
+    const priceMax = searchParams.get("priceMax");
     const propertyType = searchParams.get("propertyType");
     const amenities = searchParams.get("amenities");
     const instantBook = searchParams.get("instantBook");
@@ -29,6 +29,10 @@ const priceMax = searchParams.get("priceMax");
     const urlFilters = {};
     if (guests) urlFilters.guests = parseInt(guests);
     if (priceMin && priceMax) urlFilters.priceRange = [parseInt(priceMin), parseInt(priceMax)];
+    if (propertyType && propertyType !== "all") urlFilters.propertyType = propertyType;
+    if (amenities) urlFilters.amenities = amenities.split(",");
+    if (instantBook === "true") urlFilters.instantBook = true;
+    if (superhost === "true") urlFilters.superhost = true;
     
     if (Object.keys(urlFilters).length > 0) {
       setFilters(urlFilters);
@@ -60,7 +64,7 @@ const priceMax = searchParams.get("priceMax");
     setFilters(newFilters);
   };
 
-  const getActiveFilterChips = () => {
+const getActiveFilterChips = () => {
     const chips = [];
     
     if (filters.priceRange) {
@@ -95,42 +99,16 @@ const priceMax = searchParams.get("priceMax");
     }
     
     if (filters.instantBook) {
-chips.push({
+      chips.push({
         key: "instantBook",
         label: "Instant Book"
       });
     }
 
-    if (propertyType) {
-      chips.push({
-        key: "propertyType",
-        label: propertyType
-      });
-    }
-
-    if (amenities) {
-      const amenityList = amenities.split(",");
-      amenityList.forEach(amenity => {
-        chips.push({
-          key: `amenity-${amenity}`,
-          label: amenity.charAt(0).toUpperCase() + amenity.slice(1)
-        });
-      });
-    }
-
-    if (superhost === "true") {
+    if (filters.superhost) {
       chips.push({
         key: "superhost",
         label: "Superhost"
-      });
-    }
-
-    if (priceMin || priceMax) {
-      const min = priceMin || "0";
-      const max = priceMax || "∞";
-      chips.push({
-        key: "priceRange",
-        label: `$${min} - $${max}`
       });
     }
     
