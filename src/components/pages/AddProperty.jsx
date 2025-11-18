@@ -30,7 +30,8 @@ const [formData, setFormData] = useState({
     maxGuests: 1,
     photos: [],
     features: [],
-    pricePerNight: ''
+    pricePerNight: '',
+    defaultAvailability: 'available'
   });
 
   const [errors, setErrors] = useState({});
@@ -102,9 +103,14 @@ const propertyData = {
         amenities: formData.features,
         rating: 0,
         reviewCount: 0,
-location: {
+        location: {
           lat: 0,
           lng: 0
+        },
+        availabilitySettings: {
+          advanceBooking: 365,
+          minimumStay: 1,
+          maximumStay: 28
         }
       };
       

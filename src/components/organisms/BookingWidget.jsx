@@ -6,20 +6,46 @@ import { toast } from "react-toastify";
 import { bookingService } from "@/services/api/bookingService";
 import { differenceInDays, format, isAfter, isBefore, startOfDay } from "date-fns";
 
+import { availabilityService } from '@/services/api/availabilityService';
+
 const BookingWidget = ({ property }) => {
   const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showGuestSelector, setShowGuestSelector] = useState(false);
-
+  const [availabilityError, setAvailabilityError] = useState("");
   const nights = checkIn && checkOut ? differenceInDays(new Date(checkOut), new Date(checkIn)) : 0;
   const subtotal = nights * property.pricePerNight;
   const cleaningFee = 50;
   const serviceFee = Math.round(subtotal * 0.14);
   const total = subtotal + cleaningFee + serviceFee;
 
-  const isValidBooking = checkIn && checkOut && nights > 0 && nights <= 28;
+const isValidBooking = checkIn && checkOut && nights > 0 && nights <= 28 && !availabilityError;
+
+  // Check availability when dates change
+  useEffect(() => {
+    const checkAvailability = async () => {
+      if (checkIn && checkOut && property?.Id) {
+        try {
+          setAvailabilityError("");
+          const isAvailable = await availabilityService.isDateRangeAvailable(
+            property.Id,
+            checkIn,
+            checkOut
+          );
+          if (!isAvailable) {
+            setAvailabilityError("Some dates in this range are not available");
+          }
+        } catch (error) {
+          console.error('Failed to check availability:', error);
+          setAvailabilityError("Unable to check availability");
+        }
+      }
+    };
+
+    checkAvailability();
+  }, [checkIn, checkOut, property?.Id]);
 
   const adjustGuests = (delta) => {
     const newGuests = Math.max(1, Math.min(property.maxGuests, guests + delta));
@@ -68,10 +94,23 @@ const BookingWidget = ({ property }) => {
     }
   };
 
-  // Prevent past dates
+// Prevent past dates
   const today = format(new Date(), "yyyy-MM-dd");
   const minCheckOut = checkIn ? format(new Date(new Date(checkIn).getTime() + 86400000), "yyyy-MM-dd") : today;
 
+  // Show availability error
+  const renderAvailabilityError = () => {
+    if (!availabilityError) return null;
+    
+    return (
+      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+        <div className="flex items-center">
+          <ApperIcon name="AlertCircle" size={16} className="text-red-500 mr-2" />
+          <p className="text-sm text-red-700">{availabilityError}</p>
+        </div>
+      </div>
+    );
+  };
   return (
     <motion.div
       className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 sticky top-6"
@@ -94,7 +133,7 @@ const BookingWidget = ({ property }) => {
         </div>
       </div>
 
-      {/* Date Selection */}
+{/* Date Selection */}
       <div className="border border-gray-300 rounded-xl mb-4 overflow-hidden">
         <div className="grid grid-cols-2">
           <div className="p-3 border-r border-gray-300">
@@ -105,7 +144,10 @@ const BookingWidget = ({ property }) => {
               type="date"
               value={checkIn}
               min={today}
-              onChange={(e) => setCheckIn(e.target.value)}
+              onChange={(e) => {
+                setCheckIn(e.target.value);
+                setAvailabilityError("");
+              }}
               className="w-full border-0 outline-none bg-transparent text-sm font-medium text-gray-900"
             />
           </div>
@@ -117,7 +159,10 @@ const BookingWidget = ({ property }) => {
               type="date"
               value={checkOut}
               min={minCheckOut}
-              onChange={(e) => setCheckOut(e.target.value)}
+              onChange={(e) => {
+                setCheckOut(e.target.value);
+                setAvailabilityError("");
+              }}
               className="w-full border-0 outline-none bg-transparent text-sm font-medium text-gray-900"
             />
           </div>

@@ -22,7 +22,14 @@ async create(propertyData) {
       // Ensure images array exists and has at least a placeholder
       images: propertyData.images && propertyData.images.length > 0 
         ? propertyData.images 
-        : ['/api/placeholder/800/600']
+        : ['/api/placeholder/800/600'],
+      // Initialize with default availability settings
+      defaultAvailability: 'available',
+      availabilitySettings: {
+        advanceBooking: 365, // days
+        minimumStay: 1,
+        maximumStay: 28
+      }
     };
     properties.push(newProperty);
     return newProperty;

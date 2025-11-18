@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "propertyId": 1,
+    "date": "2024-12-20",
+    "status": "available"
+  },
+  {
+    "Id": 2,
+    "propertyId": 1,
+    "date": "2024-12-21",
+    "status": "available"
+  },
+  {
+    "Id": 3,
+    "propertyId": 1,
+    "date": "2024-12-22",
+    "status": "unavailable"
+  },
+  {
+    "Id": 4,
+    "propertyId": 1,
+    "date": "2024-12-23",
+    "status": "available"
+  },
+  {
+    "Id": 5,
+    "propertyId": 1,
+    "date": "2024-12-24",
+    "status": "unavailable"
+  },
+  {
+    "Id": 6,
+    "propertyId": 1,
+    "date": "2024-12-25",
+    "status": "unavailable"
+  },
+  {
+    "Id": 7,
+    "propertyId": 2,
+    "date": "2024-12-20",
+    "status": "available"
+  },
+  {
+    "Id": 8,
+    "propertyId": 2,
+    "date": "2024-12-21",
+    "status": "available"
+  },
+  {
+    "Id": 9,
+    "propertyId": 2,
+    "date": "2024-12-22",
+    "status": "booked"
+  },
+  {
+    "Id": 10,
+    "propertyId": 2,
+    "date": "2024-12-23",
+    "status": "available"
+  }
+]

@@ -4,23 +4,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 import RatingDisplay from "@/components/molecules/RatingDisplay";
 import BookingWidget from "@/components/organisms/BookingWidget";
+import AvailabilityCalendar from "@/components/molecules/AvailabilityCalendar";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import { propertyService } from "@/services/api/propertyService";
 import { hostService } from "@/services/api/hostService";
 import { reviewService } from "@/services/api/reviewService";
-
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [property, setProperty] = useState(null);
+const [property, setProperty] = useState(null);
   const [host, setHost] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
-
   const loadPropertyDetails = async () => {
     try {
       setLoading(true);
@@ -296,11 +295,15 @@ const PropertyDetails = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+</motion.div>
         </div>
 
-        {/* Right Column - Booking Widget */}
-        <div className="lg:col-span-1">
+        {/* Right Column - Booking Widget and Availability */}
+        <div className="lg:col-span-1 space-y-6">
+          <AvailabilityCalendar 
+            propertyId={property.Id} 
+            className="lg:sticky lg:top-6" 
+          />
           <BookingWidget property={property} />
         </div>
       </div>
