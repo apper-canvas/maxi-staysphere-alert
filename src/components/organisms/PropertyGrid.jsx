@@ -74,7 +74,7 @@ const PropertyGrid = ({ filters = {}, searchLocation = "" }) => {
       setLoading(true);
       setError("");
       
-      const response = await propertyService.getProperties();
+const response = await propertyService.getAll();
       const allProperties = response?.data || [];
       
       // Apply filters to the properties
